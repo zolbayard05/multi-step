@@ -1,9 +1,9 @@
 import Image from "next/image";
 
-let LastHome = () => {
+let FinelStep = () => {
   return (
-    <div className="min-h-screen bg-[#F4F4F5] flex items-center justify-center">
-      <div className="w-[480px] h-[655px] bg-white rounded-lg p-8 flex flex-col shadow-sm">
+    <div className="min-h-screen bg-[#F4F4F5] flex justify-center pt-64.5">
+      <div className="w-[480px] h-[195px] bg-white rounded-lg p-8 flex flex-col shadow-sm gap-2">
         <Image src="/Main 1.svg" alt="logo" width={60} height={60} />
         <h1 className="text-[26px] font-semibold text-black leading-none">
           You're all set 🔥🔥🔥
@@ -16,4 +16,4 @@ let LastHome = () => {
     </div>
   );
 };
-export default LastHome;
+export default FinelStep;

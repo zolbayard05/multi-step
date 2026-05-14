@@ -1,13 +1,19 @@
 "use client";
 import Image from "next/image";
-import SecondHome from "@/components/Page2";
-import ThirdHome from "@/components/Page3";
-import Input from "@/components/Input";
+import StepOne from "@/components/StepOne";
+import StepTwo from "@/components/StepTwo";
+import StepThree from "@/components/StepThree";
+import FinelStep from "@/components/FinelStep";
 import { useState } from "react";
 
 let Home = () => {
+  const [currentStep, setCurrentStep] = useState(0);
+
+  const StepComponents = [StepOne, StepTwo, StepThree, FinelStep][currentStep];
+  const handleOnClick = () => setCurrentStep(currentStep + 1);
+
   return (
-    <div className="min-h-screen bg-[#F4F4F5] flex items-center justify-center">
+    <div className="h-screen bg-[#F4F4F5] flex items-center justify-center">
       <div className="w-[480px] h-[655px] bg-white rounded-lg p-8 flex flex-col justify-between shadow-sm">
         {/* Top Section */}
         <div>
@@ -21,24 +27,22 @@ let Home = () => {
             <p className="text-[#8E8E8E] text-[18px]">
               Please provide all current information accurately.
             </p>
+            <StepComponents />
           </div>
 
           {/* Form */}
-          <div className="mt-8 flex flex-col gap-3">
-            <Input label="First name" placeholder="Your first name" />
-            <Input label="Last name" placeholder="Your last name" />
-            <Input label="Username" placeholder="Your username" />
-          </div>
         </div>
 
         {/* Button */}
-        <button className="w-full h-[44px] bg-black text-white text-[18px] rounded-lg font-medium flex items-center justify-center gap-2">
+        <button
+          onClick={handleOnClick}
+          className="w-full h-[44px] bg-black text-white text-[18px] rounded-lg font-medium flex items-center justify-center gap-2 cursor-pointer"
+          type="butten"
+        >
           Continue 1/3
           <Image src="/chevron_right.svg" alt="right" width={24} height={24} />
         </button>
       </div>
-      <SecondHome />
-      <ThirdHome />
     </div>
   );
 };
