@@ -8,9 +8,20 @@ import { useState } from "react";
 
 let Home = () => {
   const [currentStep, setCurrentStep] = useState(0);
+  const [data, setData] = useState({});
 
   const StepComponents = [StepOne, StepTwo, StepThree, FinelStep][currentStep];
-  const handleOnClick = () => setCurrentStep(currentStep + 1);
+
+  const handleOnClick = () => {
+    setCurrentStep(currentStep + 1);
+  };
+  const handleOnBack = () => {
+    setCurrentStep(currentStep - 1);
+  };
+
+  const handleInputValue = (inputValue, key) => {
+    setData({ ...data, [key]: inputValue });
+  };
 
   return (
     <div className="h-screen bg-[#F4F4F5] flex items-center justify-center">
@@ -23,25 +34,48 @@ let Home = () => {
             <h1 className="text-[26px] font-semibold text-black leading-none">
               Join Us! 😎🥷🏻🇲🇳
             </h1>
-
-            <p className="text-[#8E8E8E] text-[18px]">
-              Please provide all current information accurately.
-            </p>
-            <StepComponents />
+            {currentStep < 3 && (
+              <p className="text-[#8E8E8E] text-[18px]">
+                Please provide all current information accurately.
+              </p>
+            )}
+            <StepComponents handleInputValue={handleInputValue} />
           </div>
-
-          {/* Form */}
         </div>
 
         {/* Button */}
-        <button
-          onClick={handleOnClick}
-          className="w-full h-[44px] bg-black text-white text-[18px] rounded-lg font-medium flex items-center justify-center gap-2 cursor-pointer"
-          type="butten"
-        >
-          Continue 1/3
-          <Image src="/chevron_right.svg" alt="right" width={24} height={24} />
-        </button>
+        {currentStep < 3 && (
+          <div className="flex gap-2 ">
+            {currentStep > 0 && (
+              <button
+                type="button"
+                onClick={handleOnBack}
+                className=" rounded-md bg-white text-[#202124] border border-[#CBD5E1] w-45 flex items-center justify-center gap-2 text-[18px] font-medium cursor-pointer"
+              >
+                <Image
+                  src="/chevron_left.svg"
+                  alt="left"
+                  width={24}
+                  height={24}
+                />
+                Back
+              </button>
+            )}
+            <button
+              onClick={handleOnClick}
+              className="w-full h-[44px] bg-black text-white text-[18px] rounded-lg font-medium flex items-center justify-center gap-2 cursor-pointer"
+              type="butten"
+            >
+              Continue {currentStep + 1}/3
+              <Image
+                src="/chevron_right.svg"
+                alt="right"
+                width={24}
+                height={24}
+              />
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
