@@ -1,4 +1,5 @@
 "use client";
+import * as z from "zod";
 import Image from "next/image";
 import StepOne from "@/components/StepOne";
 import StepTwo from "@/components/StepTwo";
@@ -9,6 +10,23 @@ import { useState } from "react";
 let Home = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [data, setData] = useState({});
+
+  const dataSchema = z.object({
+    Firstname: z.string().min(2, { error: "Too short" }).max(20),
+    Lastname: z.string().min(2, { error: "Too short" }).max(20),
+    Username: z.string().min(2, { error: "Too short" }).max(20),
+    phoneNumber: z
+      .number()
+      .min(8, { error: "Must be 8 digits" })
+      .max(8, { error: "Must be 8 digits" }),
+    emial: z
+      .string()
+      .regex("/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/"),
+    password: z.string(),
+    confirmPassword: z.string(),
+    date: z.iso.date(),
+    image: z.string(),
+  });
 
   const StepComponents = [StepOne, StepTwo, StepThree, FinelStep][currentStep];
 

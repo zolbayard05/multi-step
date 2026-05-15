@@ -1,4 +1,4 @@
-let Input = ({ label, placeholder, type, handleInputValue }) => {
+let Input = ({ label, placeholder, type, handleInputValue, message }) => {
   const handleInputChange = (e) => {
     handleInputValue(e.target.value, placeholder);
   };
@@ -14,6 +14,7 @@ let Input = ({ label, placeholder, type, handleInputValue }) => {
         onChange={handleInputChange}
         className="h-[44px] rounded-lg border border-[#D1D5DB] px-4 text-black outline-none focus:border-[#0BA5EC]"
       />
+      <p>{message}</p>
     </div>
   );
 };
