@@ -6,34 +6,54 @@ import StepTwo from "@/components/StepTwo";
 import StepThree from "@/components/StepThree";
 import FinelStep from "@/components/FinelStep";
 import { useState } from "react";
+// import { merge } from "zod/mini";
 
 let Home = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [data, setData] = useState({});
+  const [error, setError] = useState({});
 
-  const dataSchema = z.object({
+  const stepOneSchema = z.object({
     Firstname: z.string().min(2, { error: "Too short" }).max(20),
     Lastname: z.string().min(2, { error: "Too short" }).max(20),
     Username: z.string().min(2, { error: "Too short" }).max(20),
+  });
+
+  const stepTwoSchema = z.object({
     phoneNumber: z
       .number()
       .min(8, { error: "Must be 8 digits" })
       .max(8, { error: "Must be 8 digits" }),
-    emial: z
-      .string()
-      .regex("/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/"),
+    email: z.string().regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"),
     password: z.string(),
     confirmPassword: z.string(),
+  });
+
+  const stepThreeSchema = z.object({
     date: z.iso.date(),
     image: z.string(),
   });
 
+  // const finelSchema = merge(stepOneSchema, stepTwoSchema, stepThreeSchema);
+
   const StepComponents = [StepOne, StepTwo, StepThree, FinelStep][currentStep];
 
-  const handleOnClick = () => {
-    setCurrentStep(currentStep + 1);
+  const handleOnClickNext = () => {
+    let schema;
+    if (currentStep === 0) {
+      schema = stepOneSchema;
+    } else if (currentStep === 1) {
+      schema = stepTwoSchema;
+    } else {
+      schema = stepThreeSchema;
+    }
+
+    const result = schema.safeParse(data);
+    if (result.success) {
+      setCurrentStep(currentStep + 1);
+    }
   };
-  const handleOnBack = () => {
+  const handleOnClickBack = () => {
     setCurrentStep(currentStep - 1);
   };
 
@@ -62,38 +82,37 @@ let Home = () => {
         </div>
 
         {/* Button */}
-        {currentStep < 3 && (
-          <div className="flex gap-2 ">
-            {currentStep > 0 && (
-              <button
-                type="button"
-                onClick={handleOnBack}
-                className=" rounded-md bg-white text-[#202124] border border-[#CBD5E1] w-45 flex items-center justify-center gap-2 text-[18px] font-medium cursor-pointer"
-              >
-                <Image
-                  src="/chevron_left.svg"
-                  alt="left"
-                  width={24}
-                  height={24}
-                />
-                Back
-              </button>
-            )}
+
+        <div className="flex gap-2 ">
+          {currentStep > 0 && (
             <button
-              onClick={handleOnClick}
-              className="w-full h-[44px] bg-black text-white text-[18px] rounded-lg font-medium flex items-center justify-center gap-2 cursor-pointer"
-              type="butten"
+              type="button"
+              onClick={handleOnClickBack}
+              className=" rounded-md bg-white text-[#202124] border border-[#CBD5E1] w-45 flex items-center justify-center gap-2 text-[18px] font-medium cursor-pointer"
             >
-              Continue {currentStep + 1}/3
               <Image
-                src="/chevron_right.svg"
-                alt="right"
+                src="/chevron_left.svg"
+                alt="left"
                 width={24}
                 height={24}
               />
+              Back
             </button>
-          </div>
-        )}
+          )}
+          <button
+            onClick={handleOnClickNext}
+            className="w-full h-[44px] bg-black text-white text-[18px] rounded-lg font-medium flex items-center justify-center gap-2 cursor-pointer"
+            type="butten"
+          >
+            Continue {currentStep + 1}/3
+            <Image
+              src="/chevron_right.svg"
+              alt="right"
+              width={24}
+              height={24}
+            />
+          </button>
+        </div>
       </div>
     </div>
   );

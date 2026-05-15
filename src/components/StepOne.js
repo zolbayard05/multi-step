@@ -7,6 +7,7 @@ let StepOne = ({ handleInputValue }) => {
         label="First name"
         placeholder="Your first name"
         handleInputValue={handleInputValue}
+        error={true}
         message={"Please enter your first name."}
       />
       <Input
