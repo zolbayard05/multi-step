@@ -1,13 +1,6 @@
-let Input = ({
-  label,
-  placeholder,
-  type,
-  handleInputValue,
-  message,
-  error,
-}) => {
+let Input = ({ label, placeholder, type, name, value, handleInputValue, error }) => {
   const handleInputChange = (e) => {
-    handleInputValue(e.target.value, placeholder);
+    handleInputValue(e.target.value, name);
   };
   return (
     <div className="flex flex-col gap-2">
@@ -16,13 +9,15 @@ let Input = ({
       </label>
 
       <input
-        style={error === true ? { border: "1px solid #e14942" } : null}
+        style={error ? { border: "1px solid #e14942" } : null}
         type={type}
+        name={name}
         placeholder={placeholder}
+        value={value || ""}
         onChange={handleInputChange}
         className="h-[44px] rounded-lg border border-[#D1D5DB] px-4 text-black outline-none focus:border-[#0BA5EC]"
       />
-      <p className="text-[#e14942]">{message}</p>
+      <p className="text-[#e14942]">{error}</p>
     </div>
   );
 };
